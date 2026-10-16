@@ -1,0 +1,18 @@
+# Pre-commit hooks, run by `prek` (a pre-commit-compatible manager, ships in
+# the devShell). Install once per clone with `prek install`.
+repos:
+  - repo: builtin
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix, lf]
+      - id: check-toml
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt
+        language: system
+        files: '\.rs$'
+        pass_filenames: false

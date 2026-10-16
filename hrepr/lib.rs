@@ -1,17 +1,22 @@
-pub use serde_generic_derive::SerdeGeneric;
-pub mod serde;
+pub use hrepr_derive::Generic;
 
-pub trait SerdeGeneric {
+/// A type together with a structural, type-parameter-agnostic representation
+/// of itself.
+///
+/// The representation is built from heterogeneous lists ([`HCons`] / [`HNil`])
+/// and coproducts ([`HSum`] / [`HSumNil`]); polymorphic type parameters become
+/// [`TypeVar`]s in [`Mocked`](Generic::Mocked), while [`Repr`](Generic::Repr)
+/// keeps the concrete types.
+pub trait Generic {
     /// Type list of polymorphic (generic) parameters.
     type Params;
     /// Generic representation of the type.
     type Repr;
-    /// Self but with mocked type parameters
-    type Mocked: SerdeGeneric;
+    /// Self but with mocked type parameters.
+    type Mocked: Generic;
 
     fn to_repr(self) -> Self::Repr;
     fn from_repr(_: Self::Repr) -> Self;
-    const CONTAINER: serde::Container<Self>;
 }
 
 // Product types
@@ -62,18 +67,6 @@ pub struct UnitStruct;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Enum<X>(pub X);
-
-pub trait SerdeFieldAttr<F, I> {
-    const FIELD: serde::Field<Self, F>;
-}
-
-pub trait SerdeVariantFieldAttr<F, VI, FI> {
-    const FIELD: serde::Field<Self, F>;
-}
-
-pub trait SerdeVariantAttr<VI> {
-    const VARIANT: serde::Variant;
-}
 
 pub trait HLen {
     type Len: PeanoNumber;
