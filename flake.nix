@@ -33,7 +33,7 @@
         in
         {
           devShells.default = pkgs.mkShell {
-            packages = [ toolchain ];
+            packages = [ toolchain pkgs.prek ];
           };
         };
     };

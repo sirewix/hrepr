@@ -1,10 +1,18 @@
 [package]
 name = "hrepr"
-version = "0.1.0"
-edition = "2024"
+description = "Structural, type-parameter-agnostic representations for Rust types"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+readme.workspace = true
+keywords = ["hlist", "generic", "representation", "reflection", "derive"]
+categories = ["rust-patterns", "no-std"]
+documentation = "https://docs.rs/hrepr/latest"
 
 [lib]
 path = "lib.rs"
 
 [dependencies]
-hrepr-derive.path = "../hrepr-derive"
+hrepr-derive = { version = "0.1.0", path = "../hrepr-derive" }

@@ -1,7 +1,15 @@
 [package]
 name = "hrepr-derive"
-version = "0.1.0"
-edition = "2024"
+description = "Derive macro for hrepr's Generic trait"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+readme.workspace = true
+keywords = ["hlist", "generic", "derive", "representation", "reflection"]
+categories = ["rust-patterns", "no-std"]
+documentation = "https://docs.rs/hrepr-derive/latest"
 
 [lib]
 proc-macro = true

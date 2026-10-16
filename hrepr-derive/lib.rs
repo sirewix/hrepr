@@ -1,3 +1,12 @@
+//! Derive macro for [`hrepr`](https://docs.rs/hrepr)'s `Generic` trait.
+//!
+//! ```ignore
+//! #[derive(hrepr::Generic)]
+//! struct Foo<X> {
+//!     x: X,
+//! }
+//! ```
+
 extern crate proc_macro;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
@@ -9,7 +18,9 @@ use syn::Fields;
 use syn::parse_macro_input;
 
 fn mk_idx(i: usize) -> TokenStream2 {
-    (0..i).fold(quote! {::hrepr::Zero}, |tail, _| quote! {::hrepr::Succ<#tail>})
+    (0..i).fold(quote! {::hrepr::Zero}, |tail, _| {
+        quote! {::hrepr::Succ<#tail>}
+    })
 }
 
 fn mk_type_var(i: usize) -> TokenStream2 {
@@ -17,6 +28,13 @@ fn mk_type_var(i: usize) -> TokenStream2 {
     quote! {::hrepr::TypeVar<#idx>}
 }
 
+/// Derives [`hrepr::Generic`](https://docs.rs/hrepr/latest/hrepr/trait.Generic.html)
+/// for a struct or enum, generating its [`Repr`], [`Mocked`] and [`Params`]
+/// associated types along with lossless `to_repr` / `from_repr` conversions.
+///
+/// [`Repr`]: https://docs.rs/hrepr/latest/hrepr/trait.Generic.html#associatedtype.Repr
+/// [`Mocked`]: https://docs.rs/hrepr/latest/hrepr/trait.Generic.html#associatedtype.Mocked
+/// [`Params`]: https://docs.rs/hrepr/latest/hrepr/trait.Generic.html#associatedtype.Params
 #[proc_macro_derive(Generic)]
 pub fn derive_generic(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -124,10 +142,9 @@ pub fn derive_generic(input: TokenStream) -> TokenStream {
                     }
                     Fields::Unit => (quote! {}, quote! {::hrepr::UnitStruct}),
                 };
-                let generic = (0..i).fold(
-                    quote! {::hrepr::HSum::L(#generic)},
-                    |tail, _| quote! {::hrepr::HSum::R(#tail)},
-                );
+                let generic = (0..i).fold(quote! {::hrepr::HSum::L(#generic)}, |tail, _| {
+                    quote! {::hrepr::HSum::R(#tail)}
+                });
                 (var_ident, orig, generic)
             });
 

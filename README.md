@@ -7,6 +7,8 @@ separating the *shape* of a type from its *polymorphic parameters*. This is the
 building block for writing generic algorithms — schema generators, reflection
 layers, codecs — that don't care about concrete type parameters.
 
+See docs at [docs.rs/hrepr](https://docs.rs/hrepr/latest).
+
 ## The `Generic` trait
 
 ```rust
